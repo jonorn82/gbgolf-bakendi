@@ -1,0 +1,46 @@
+{
+  "kind": "singleType",
+  "collectionName": "holes",
+  "info": {
+    "singularName": "hole",
+    "pluralName": "holes",
+    "displayName": "Völlurinn",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "course": {
+      "type": "json"
+    },
+    "name": {
+      "type": "string"
+    },
+    "par": {
+      "type": "string"
+    },
+    "Teigar": {
+      "type": "enumeration",
+      "enum": [
+        "Teigur 42",
+        "Teigur 48",
+        "Teigur 53",
+        "Teigur 55"
+      ]
+    },
+    "Video": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.video"
+      ]
+    },
+    "men_slope": {
+      "type": "string"
+    },
+    "men_cr": {
+      "type": "string"
+    }
+  }
+}

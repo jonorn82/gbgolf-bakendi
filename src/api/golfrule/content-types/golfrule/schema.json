@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "golfrules",
+  "info": {
+    "singularName": "golfrule",
+    "pluralName": "golfrules",
+    "displayName": "Staðarreglur"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "golfrule": {
+      "type": "richtext"
+    }
+  }
+}

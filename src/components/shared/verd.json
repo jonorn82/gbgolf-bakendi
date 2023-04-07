@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_verd",
+  "info": {
+    "displayName": "Verð"
+  },
+  "options": {},
+  "attributes": {
+    "Titill": {
+      "type": "string"
+    },
+    "Verd": {
+      "type": "integer"
+    }
+  }
+}

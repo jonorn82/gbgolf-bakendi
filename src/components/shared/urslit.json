@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_shared_urslits",
+  "info": {
+    "displayName": "Urslit"
+  },
+  "options": {},
+  "attributes": {
+    "Urslit": {
+      "type": "json"
+    }
+  }
+}

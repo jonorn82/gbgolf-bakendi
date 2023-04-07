@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_flokkurs",
+  "info": {
+    "displayName": "Flokkur",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Titill": {
+      "type": "string"
+    },
+    "verd": {
+      "displayName": "Verð",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.verd"
+    }
+  }
+}

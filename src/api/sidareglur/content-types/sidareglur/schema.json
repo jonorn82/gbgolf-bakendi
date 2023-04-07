@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "sidareglurs",
+  "info": {
+    "singularName": "sidareglur",
+    "pluralName": "sidareglurs",
+    "displayName": "Siðareglur"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "rules": {
+      "type": "richtext"
+    }
+  }
+}

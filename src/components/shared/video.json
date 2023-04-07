@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_shared_videos",
+  "info": {
+    "displayName": "Video",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "hole": {
+      "type": "integer"
+    },
+    "videoId": {
+      "type": "string"
+    },
+    "par": {
+      "type": "integer"
+    },
+    "hc": {
+      "type": "integer"
+    },
+    "red42": {
+      "type": "integer"
+    },
+    "blue48": {
+      "type": "integer"
+    },
+    "yellow53": {
+      "type": "integer"
+    },
+    "white55": {
+      "type": "integer"
+    }
+  }
+}
