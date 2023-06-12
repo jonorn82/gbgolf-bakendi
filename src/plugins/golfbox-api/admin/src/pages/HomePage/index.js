@@ -5,7 +5,11 @@
  */
 
 import React from "react";
+import he from "he";
+const { convert } = require('html-to-text');
+import CKeditor from '@ckeditor/ckeditor5-react';
 import {
+  Textarea,
   Table,
   Thead,
   Tbody,
@@ -28,24 +32,34 @@ import {
   Button,
   Divider,
 } from "@strapi/design-system";
-import { getClasses, getTournaments } from "../../utils/api";
+import { getClasses, getTournaments, getInfo } from "../../utils/api";
 
 const HomePage = () => {
   const [hasSetup, setHasSetup] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const [tournamentId, setTournamentId] = React.useState("");
+  const [infoData, setInfoData] = React.useState("");
   const [hasLeaders, setHasLeaders] = React.useState(false);
   const [getLeaders, setLeaderboards] = React.useState({});
   const [expanded, setExpanded] = React.useState(false);
   const [classes, setClasses] = React.useState([]);
   const [btnDisabled, setBtnDisabled] = React.useState(true);
   const [tournamentName, setTournamentName] = React.useState("");
+  const [reset, setReset] = React.useState(false);
 
   React.useEffect(async () => {
     try {
       const { data } = await getTournaments();
       setHasSetup(data);
       setIsLoading(false);
+      setTournamentId(data[0].ID);
+      const { data: info } = await getInfo(data[0].ID);
+      const text = decodeHtml(info.PublicInformation.Description);
+            const options = {
+              wordwrap: 130,
+              // ...
+            };
+      setInfoData(convert(text, options));
     } catch (error) {
       console.error(error);
     }
@@ -54,6 +68,16 @@ const HomePage = () => {
       setIsLoading(true);
     };
   }, []);
+
+  React.useEffect(async () => {
+    setLeaderboards({});
+    setClasses([]);
+    setHasLeaders(false);
+    setBtnDisabled(true);
+    setTournamentName("");
+    setReset(false);
+  }, [reset]);
+
 
   function filterLeaderboard(Leaderboard) {
     //console.log("Lead: ", Leaderboard);
@@ -69,7 +93,6 @@ const HomePage = () => {
   }
 
   async function getLeaderboards(data, tournamentId) {
-    console.log("Filtera leaderboard fyrir");
     let leaderboardArray = [];
     if (data) {
       for (let i = 0; i < data.length; i++) {
@@ -88,17 +111,37 @@ const HomePage = () => {
       return leaderboardArray;
     }
   }
+  React.useEffect(async() => {
+    if(tournamentId === "") return;
 
+  }, [infoData. classes])
   React.useEffect(
     async () => {
       setBtnDisabled(true);
       setHasLeaders(false);
+      console.log("Text: ", tournamentId)
       try {
         if (tournamentId) {
           const { data } = await getClasses(tournamentId);
-          if (data) {
-            await getLeaderboards(data, tournamentId);
-            setClasses(data);
+          const classesData = data;
+          setClasses(classesData);
+          //console.log(tournamentId, await getInfo(tournamentId));
+          const { data: info } = await getInfo(tournamentId);
+          console.log("Info: ","hér")
+          if (classesData) {
+            console.log("Info: ", "Þar");
+            await getLeaderboards(classesData, tournamentId);
+            console.log("Info: ", "Þar1");
+            let text = decodeHtml(info.PublicInformation.Description);
+            console.log("Info: ", "Þar2");
+            const options = {
+              wordwrap: 130,
+              // ...
+            };
+            text = convert(text, options)
+            console.log("Info: ", "Þar3");
+            console.log("Info: ", text);
+            setInfoData(text);
             setIsLoading(false);
             setHasLeaders(true);
             setBtnDisabled(false);
@@ -121,6 +164,9 @@ const HomePage = () => {
   const handleToggle = id => () => {
     setExpanded(s => s === id ? null : id);
   };
+  
+  
+  
   async function postResults() {
     try {
       const body = getLeaders
@@ -159,12 +205,28 @@ const HomePage = () => {
       console.error("Error:", error);
     }
   }
-  function onChangeHandler(event) {
-    console.log("Þetta er event: ", typeof(event));
+  function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  }
+  async function onChangeHandler(event) {
+    //console.log("Þetta er event: ", typeof(event));
+    setReset(true);
     setTournamentId(event);
+    const { data: info } = await getInfo(event);
+      const text = decodeHtml(info.PublicInformation.Description);
+            const options = {
+              wordwrap: 130,
+              // ...
+            };
+    setInfoData(convert(text, options));
+    //const myinfo = await getInfo(tournamentId);
+    //setInfoData(myinfo.data.PublicInformation.Description);
+    //console.log("Þetta er myinfo: ", myinfo);
     //setTournamentName(hasSetup[event].Name);
-    console.log("Hefur setup: ", hasSetup.map(item => String(item.ID) === event ? setTournamentName(item.Name): null));
-    console.log("Þetta er nafn: ", tournamentName);
+    //console.log("Hefur setup: ", hasSetup.map(item => String(item.ID) === event ? setTournamentName(item.Name): null));
+    //console.log("Þetta er nafn: ", tournamentName);
   }
   return (
     <Layout>
@@ -191,6 +253,19 @@ const HomePage = () => {
                 <Box padding={1}>
                   <Divider />
                 </Box>
+                <Flex direction="row" alignItems="flex-start" gap={2}>
+                    <Box padding={2}>
+                      <Button size="L" disabled={btnDisabled}  onClick={() => postResults()}>
+                        Birta Úrslit
+                      </Button>
+                    </Box>
+                    <Box padding={2}>
+                      <Button size="L"  onClick={() => {}}>
+                        Birta Upplýsingar
+                      </Button>
+                    </Box>
+                  </Flex>
+                <Textarea name="infobox" value={infoData} />
                 <AccordionGroup height="48px" background="neutral150">
                 {hasLeaders
                   ? getLeaders.map((entry, index) =>
@@ -280,13 +355,7 @@ const HomePage = () => {
                     )
                   : null}
                   </AccordionGroup>
-                  <Flex direction="column" alignItems="flex-start" gap={8}>
-                  <Box padding={2}>
-                    <Button size="L" disabled={btnDisabled}  onClick={() => postResults()}>
-                      Birta Úrslit
-                    </Button>
-                    </Box>
-                  </Flex>
+                  
             </Box>
             }
             <Box color="neutral800" padding={4} background="neutral0"></Box>

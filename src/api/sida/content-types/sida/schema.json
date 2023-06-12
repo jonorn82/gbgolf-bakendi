@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sidur",
+  "info": {
+    "singularName": "sida",
+    "pluralName": "sidur",
+    "displayName": "Pages"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titill": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "titill"
+    },
+    "content": {
+      "type": "richtext"
+    }
+  }
+}

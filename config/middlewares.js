@@ -4,11 +4,30 @@ module.exports = [
     name: "strapi::security",
     config: {
       contentSecurityPolicy: {
+        useDefaults: true,
         directives: {
-          "script-src": ["'self'", "'unsafe-inline'", "localhost:3000"],
-          "connect-src": ["'self'", "https:", "localhost:1337"],
-          "img-src": ["'self'", "data:", "cdn.jsdelivr.net", "strapi.io"],
+          "script-src": ["'self'", "'unsafe-inline'", "localhost:3000", "*.tinymce.com", "*.tiny.cloud", "https:"],
+          "connect-src": ["'self'", "https:", "golfbox.sveitan.is", "localhost:1337", "*.tinymce.com", "*.tiny.cloud", "blob:", "*.strapi.io"],
+          "img-src": [
+            "'self'",
+            "*.tinymce.com",
+            "*.tiny.cloud",
+            "data:",
+            "blob:",
+            "dl.airtable.com",
+            "strapi.io",
+            "s3.amazonaws.com",
+            "cdn.jsdelivr.net",
+          ],
+          "style-src": [
+            "'self'",
+            "'unsafe-inline'",
+            "*.tinymce.com",
+            "*.tiny.cloud",
+          ],
+          "font-src": ["'self'", "*.tinymce.com", "*.tiny.cloud"],
         },
+        upgradeInsecureRequests: null,
       },
     },
   },
@@ -17,14 +36,7 @@ module.exports = [
     name: "strapi::cors",
     config: {
       enabled: true,
-      headers: "*",
-      origin: [
-        "http://localhost:1337",
-        "http://localhost:8000",
-        "https://golfbox.sveitan.is",
-        "https://golfbox.sveitan.is/getTournaments",
-        "https://golfbox.sveitan.is/getLeaderboard",
-      ],
+      
     },
   },
   "strapi::logger",
